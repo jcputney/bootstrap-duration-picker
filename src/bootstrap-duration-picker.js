@@ -1,7 +1,6 @@
 (function iife($) {
-
+  // eslint-disable-next-line no-param-reassign
   $.DurationPicker = function DurationPicker(mainElement, options) {
-
     const defaults = {
       translations: {
         day: 'day',
@@ -14,6 +13,8 @@
         seconds: 'seconds',
       },
       showSeconds: false,
+      showMinutes: true,
+      showHours: true,
       showDays: true,
     };
 
@@ -30,13 +31,17 @@
         class: 'bdp-input',
         html: [
           buildDisplayBlock('days', !plugin.settings.showDays),
-          buildDisplayBlock('hours', false, plugin.settings.showDays ? 23 : 99999),
-          buildDisplayBlock('minutes', false, 59),
-          buildDisplayBlock('seconds', !plugin.settings.showSeconds, 59),
+          buildDisplayBlock('hours', !plugin.settings.showHours,
+            plugin.settings.showDays ? 23 : 99999),
+          buildDisplayBlock('minutes', !plugin.settings.showMinutes,
+            plugin.settings.showHours ? 59 : 99999),
+          buildDisplayBlock('seconds', !plugin.settings.showSeconds,
+            plugin.settings.showMinutes ? 59 : 99999),
         ],
       });
 
-      mainInput.after(mainInputReplacer).hide();
+      mainInput.after(mainInputReplacer)
+        .hide();
 
       if (mainInput.val() === '') mainInput.val(0);
       setValue(mainInput.val(), true);
@@ -65,10 +70,10 @@
     }
 
     function updateUI(isInitializing = false) {
-      const total = seconds +
-        minutes * 60 +
-        hours * 60 * 60 +
-        days * 24 * 60 * 60;
+      const total = seconds
+        + minutes * 60
+        + hours * 60 * 60
+        + days * 24 * 60 * 60;
       mainInput.val(total);
       mainInput.change();
 
@@ -102,7 +107,8 @@
         min: 0,
         value: 0,
         disabled,
-      }).change(durationPickerChanged);
+      })
+        .change(durationPickerChanged);
 
       if (max) {
         input.attr('max', max);
@@ -141,22 +147,24 @@
       updateUI(isInitializing);
     }
 
-    function getValue() { return mainInput.val(); }
+    function getValue() {
+      return mainInput.val();
+    }
 
     //
     // public methods
     //
-    plugin.getValue = function() {
-      return getValue();
-    };
+    plugin.getValue = () => getValue();
 
-    plugin.setValue = function(value) {
+    plugin.setValue = (value) => {
       setValue(value, true);
     };
 
-    plugin.destroy = function () {
-      mainInput.next('.bdp-input').remove();
-      mainInput.data('durationPicker', null).show();
+    plugin.destroy = () => {
+      mainInput.next('.bdp-input')
+        .remove();
+      mainInput.data('durationPicker', null)
+        .show();
     };
 
     plugin.init();
@@ -164,12 +172,13 @@
 
   // eslint-disable-next-line no-param-reassign
   $.fn.durationPicker = function durationPicker(options) {
-    return this.each(function() {
-      if (undefined === $(this).data('durationPicker')) {
+    return this.each(() => {
+      if (undefined === $(this)
+        .data('durationPicker')) {
         const plugin = new $.DurationPicker(this, options);
-        $(this).data('durationPicker', plugin);
+        $(this)
+          .data('durationPicker', plugin);
       }
     });
   };
-
-})(jQuery); // eslint-disable-line no-undef
+}(jQuery)); // eslint-disable-line no-undef

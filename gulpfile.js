@@ -3,12 +3,14 @@ const minify = require('gulp-minify');
 const cleanCSS = require('gulp-clean-css');
 const babel = require('gulp-babel');
 
-gulp.task('default', ['minify-js', 'minify-css']);
+const dirs = {
+  dist: 'dist',
+};
 
-gulp.task('minify-js', function() {
-  gulp.src('src/*.js')
+gulp.task('minify-js', () => {
+  return gulp.src('src/*.js')
     .pipe(babel({
-      presets: ['es2015'],
+      presets: ['@babel/env'],
     }))
     .pipe(minify({
       ext: {
@@ -16,11 +18,11 @@ gulp.task('minify-js', function() {
         min: '.js',
       },
     }))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(dirs.dist));
 });
 
-gulp.task('minify-css', function () {
-  return gulp.src('src/*.css')
-    .pipe(cleanCSS({ compatibility: 'ie8' }))
-    .pipe(gulp.dest('dist'));
-});
+gulp.task('minify-css', () => gulp.src('src/*.css')
+  .pipe(cleanCSS({ compatibility: 'ie11' }))
+  .pipe(gulp.dest(dirs.dist)));
+
+gulp.task('default', gulp.parallel(['minify-js', 'minify-css']));
