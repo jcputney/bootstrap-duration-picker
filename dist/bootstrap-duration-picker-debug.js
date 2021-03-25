@@ -17,7 +17,8 @@
       showSeconds: false,
       showMinutes: true,
       showHours: true,
-      showDays: true
+      showDays: true,
+      baseId: 'picker'
     };
     var plugin = this;
     plugin.settings = {};
@@ -81,7 +82,9 @@
     }
 
     function buildDisplayBlock(id, hidden, max) {
+      id = plugin.settings.baseId + '-' + id;
       var input = $('<input>', {
+        id: id,
         "class": 'form-control input-sm',
         type: 'number',
         min: 0,
@@ -94,8 +97,9 @@
       }
 
       inputs[id] = input;
-      var label = $('<div>', {
+      var label = $('<label>', {
         id: "bdp-".concat(id, "-label"),
+        "for": id,
         text: translate(id)
       });
       labels[id] = label;
