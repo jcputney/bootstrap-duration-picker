@@ -101,9 +101,9 @@
     }
 
     function buildDisplayBlock(id, hidden, max) {
-      id = plugin.settings.baseId + '-' + id;
+      const input_id = plugin.settings.baseId + '-' + id;
       const input = $('<input>', {
-        id: id,
+        id: input_id,
         class: 'form-control input-sm',
         type: 'number',
         min: 0,
@@ -118,8 +118,8 @@
       inputs[id] = input;
 
       const label = $('<label>', {
-        id: `bdp-${id}-label`,
-        for: id,
+        id: `bdp-${input_id}-label`,
+        for: input_id,
         text: translate(id),
       });
       labels[id] = label;
