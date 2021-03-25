@@ -10,3 +10,7 @@
     text-align: center;
     padding: 5px 3px;
 }
+
+.bdp-block label {
+    display: inline;
+}
