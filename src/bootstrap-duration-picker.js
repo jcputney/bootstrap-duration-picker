@@ -16,6 +16,7 @@
       showMinutes: true,
       showHours: true,
       showDays: true,
+      baseId: 'picker',
     };
 
     const plugin = this;
@@ -40,8 +41,7 @@
         ],
       });
 
-      mainInput.after(mainInputReplacer)
-        .hide();
+      mainInput.after(mainInputReplacer).hide();
 
       if (mainInput.val() === '') mainInput.val(0);
       setValue(mainInput.val(), true);
@@ -101,7 +101,9 @@
     }
 
     function buildDisplayBlock(id, hidden, max) {
+      id = plugin.settings.baseId + '-' + id;
       const input = $('<input>', {
+        id: id,
         class: 'form-control input-sm',
         type: 'number',
         min: 0,
@@ -115,8 +117,9 @@
       }
       inputs[id] = input;
 
-      const label = $('<div>', {
+      const label = $('<label>', {
         id: `bdp-${id}-label`,
+        for: id,
         text: translate(id),
       });
       labels[id] = label;
